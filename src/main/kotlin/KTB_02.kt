@@ -11,7 +11,7 @@ fun main() {
         val word = Word(
             original = lineParts[0],
             translate = lineParts[1],
-            correctAnswersCount = lineParts.getOrNull(2) ?: 0
+            correctAnswersCount = lineParts.getOrNull(2)?.toInt() ?: 0
         )
         dictionary.add(word)
     }
