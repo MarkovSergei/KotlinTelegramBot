@@ -1,4 +1,5 @@
 package org.example
+
 import java.io.File
 
 fun main() {
@@ -16,4 +17,20 @@ fun main() {
         dictionary.add(word)
     }
     println(dictionary)
+
+    while (true) {
+        println("Меню:")
+        println("1. Учить слова")
+        println("2. Статистика")
+        println("0. Выйти")
+        print("Ваш выбор: ")
+        val input = readln()
+
+        when (input) {
+            "1" -> println("Вы нажали 1")
+            "2" -> println("Вы нажали 2")
+            "0" -> break
+            else -> println("Некорректный ввод")
+        }
+    }
 }
