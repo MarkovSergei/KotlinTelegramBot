@@ -1,5 +1,4 @@
 package org.example
-
 import java.io.File
 
 fun main() {
@@ -28,7 +27,13 @@ fun main() {
 
         when (input) {
             "1" -> println("Вы нажали 1")
-            "2" -> println("Вы нажали 2")
+            "2" -> {
+                val filteredWords = dictionary.filter { it.correctAnswersCount >= 3 }
+                val totalWords = dictionary.size
+                val learnedWords = filteredWords.size
+                val percentLearned = learnedWords*100/dictionary.size
+                    println("Выучено $learnedWords из $totalWords слов | $percentLearned%")
+            }
             "0" -> break
             else -> println("Некорректный ввод")
         }
