@@ -1,10 +1,17 @@
 import java.io.File
 
+data class Word(
+    val original: String,
+    val translate: String,
+    val correctAnswersCount: Int,
+)
+
 fun main() {
     val wordsFile = File("words.txt")
     wordsFile.createNewFile()
     val dictionary = mutableListOf<Word>()
     val lines: List<String> = wordsFile.readLines()
+
     for (line in lines) {
         val lineParts = line.split("|")
         val word = Word(
@@ -14,10 +21,11 @@ fun main() {
         )
         dictionary.add(word)
     }
+
     println(dictionary)
 
     while (true) {
-        println("Меню:")
+        println("Меню: ")
         println("1. Учить слова")
         println("2. Статистика")
         println("0. Выйти")
@@ -27,11 +35,10 @@ fun main() {
         when (input) {
             "1" -> println("Вы нажали 1")
             "2" -> {
-                val filteredWords = dictionary.filter { it.correctAnswersCount >= 3 }
                 val totalWords = dictionary.size
-                val learnedWords = filteredWords.size
-                val percentLearned = learnedWords * 100 / dictionary.size
-                println("Выучено $learnedWords из $totalWords слов | $percentLearned%")
+                val learnedCount = dictionary.filter { it.correctAnswersCount >= 3 }.size
+                val percentLearned = (learnedCount * 100) / totalWords
+                println("Выучено $learnedCount  из $totalWords слов | $percentLearned%")
             }
 
             "0" -> break
