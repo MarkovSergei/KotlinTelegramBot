@@ -33,7 +33,13 @@ fun main() {
         val input = readln()
 
         when (input) {
-            "1" -> println("Вы нажали 1")
+            "1" -> {
+                println("Вы нажали 1")
+                while (true) {
+
+                }
+            }
+
             "2" -> {
                 val totalWords = dictionary.size
                 val learnedCount = dictionary.filter { it.correctAnswersCount >= 3 }.size
