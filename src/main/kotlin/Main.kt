@@ -4,7 +4,11 @@ data class Word(
     val original: String,
     val translate: String,
     val correctAnswersCount: Int,
-)
+) {
+    override fun toString(): String {
+        return "$original, $translate, $correctAnswersCount"
+    }
+}
 
 fun main() {
     val wordsFile = File("words.txt")
@@ -24,7 +28,11 @@ fun main() {
 
     println(dictionary)
 
+    val notLearnedList = dictionary.filter { it.correctAnswersCount < 3 }
+    println(notLearnedList.size)
+
     while (true) {
+        println()
         println("Меню: ")
         println("1. Учить слова")
         println("2. Статистика")
@@ -34,10 +42,25 @@ fun main() {
 
         when (input) {
             "1" -> {
-                println("Вы нажали 1")
-                while (true) {
-
+                if (notLearnedList.isEmpty()) {
+                    println("Все слова в словаре выучены.")
+                    continue
                 }
+
+                val questionWords = notLearnedList.take(4).shuffled()
+                val correctAnswer = questionWords[0].original
+                val listAnswer = (0..3).toList().shuffled()
+
+                println()
+                println(correctAnswer)
+                println("1 - ${questionWords[listAnswer[0]].translate}")
+                println("2 - ${questionWords[listAnswer[1]].translate}")
+                println("3 - ${questionWords[listAnswer[2]].translate}")
+                println("4 - ${questionWords[listAnswer[3]].translate}")
+                print("Введите номер ответа (1-4): ")
+
+                val userAnswer = readln().toInt()
+
             }
 
             "2" -> {
