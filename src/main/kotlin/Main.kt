@@ -49,6 +49,8 @@ fun main() {
 
                 println()
                 println(correctAnswer)
+
+
                 println("1 - ${questionWords[listAnswer[0]].translate}")
                 println("2 - ${questionWords[listAnswer[1]].translate}")
                 println("3 - ${questionWords[listAnswer[2]].translate}")
@@ -56,6 +58,14 @@ fun main() {
                 print("Введите номер ответа (1-4): ")
 
                 val userAnswer = readln().toInt()
+
+                if (userAnswer !in (1..4)) {
+                    println("Неверный символ.")
+               // } else if (userAnswer == 1) {
+                 //   println("Правильный ответ.")
+                } else {
+                    println("Ответ неверный.")
+                }
 
             }
 
