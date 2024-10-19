@@ -26,13 +26,9 @@ fun main() {
         dictionary.add(word)
     }
 
-    println(dictionary)
-
     val notLearnedList = dictionary.filter { it.correctAnswersCount < 3 }
-    println(notLearnedList.size)
 
     while (true) {
-        println()
         println("Меню: ")
         println("1. Учить слова")
         println("2. Статистика")
