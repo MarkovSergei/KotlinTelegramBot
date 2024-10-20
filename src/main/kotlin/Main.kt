@@ -26,7 +26,7 @@ fun main() {
         dictionary.add(word)
     }
 
-    val notLearnedList = dictionary.filter { it.correctAnswersCount < 3 }
+
 
     while (true) {
         println("Меню: ")
@@ -38,25 +38,39 @@ fun main() {
 
         when (input) {
             "1" -> {
+                val notLearnedList = dictionary.filter { it.correctAnswersCount < 3 }
                 if (notLearnedList.isEmpty()) {
                     println("Все слова в словаре выучены.")
                     continue
                 }
 
-                val questionWords = notLearnedList.take(4).shuffled()
+                val questionWords = notLearnedList.shuffled().take(4)
                 val correctAnswer = questionWords[0].original
-                val listAnswer = (0..3).toList().shuffled()
 
-                println()
-                println(correctAnswer)
-                println("1 - ${questionWords[listAnswer[0]].translate}")
-                println("2 - ${questionWords[listAnswer[1]].translate}")
-                println("3 - ${questionWords[listAnswer[2]].translate}")
-                println("4 - ${questionWords[listAnswer[3]].translate}")
+                val variants = questionWords
+                    .shuffled()
+                    .mapIndexed { index: Int, word: Word -> " ${index + 1} – ${word.translate}" }
+                    .joinToString(
+                        separator = "\n",
+                        prefix = "\n${correctAnswer}\n",
+                        postfix = "\n 0 – выйти в меню",
+                    )
+
+                println(variants)
                 print("Введите номер ответа (1-4): ")
+                var userAnswer = readln().toIntOrNull()
 
-                val userAnswer = readln().toInt()
-
+                while (userAnswer == null ||
+                    userAnswer !in 0..4
+                ) {
+                    println("Неверный ввод. Выберите правильный ответ: ")
+                    println(variants)
+                    print("Введите номер ответа (1-4): ")
+                    userAnswer = readln().toIntOrNull()
+                }
+                println()
+                println("правильно")
+                println()
             }
 
             "2" -> {
