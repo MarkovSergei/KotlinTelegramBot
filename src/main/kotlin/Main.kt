@@ -29,7 +29,7 @@ fun main() {
 
 
     while (true) {
-        println("Меню: ")
+        println("\nМеню: ")
         println("1. Учить слова")
         println("2. Статистика")
         println("0. Выйти")
@@ -37,40 +37,42 @@ fun main() {
         val input = readln()
 
         when (input) {
+
+
             "1" -> {
-                val notLearnedList = dictionary.filter { it.correctAnswersCount < 3 }
-                if (notLearnedList.isEmpty()) {
-                    println("Все слова в словаре выучены.")
-                    continue
-                }
+                while (true) {
+                    val notLearnedList = dictionary.filter { it.correctAnswersCount < 3 }
+                    if (notLearnedList.isEmpty()) {
+                        println("Все слова в словаре выучены.")
+                        continue
+                    }
 
-                val questionWords = notLearnedList.shuffled().take(4)
-                val correctAnswer = questionWords[0].original
+                    val questionWords = notLearnedList.shuffled().take(4)
+                    val correctAnswer = questionWords[0].original
 
-                val variants = questionWords
-                    .shuffled()
-                    .mapIndexed { index: Int, word: Word -> " ${index + 1} – ${word.translate}" }
-                    .joinToString(
-                        separator = "\n",
-                        prefix = "\n${correctAnswer}\n",
-                        postfix = "\n 0 – выйти в меню",
-                    )
+                    val variants = questionWords
+                        .shuffled()
+                        .mapIndexed { index: Int, word: Word -> " ${index + 1} – ${word.translate}" }
+                        .joinToString(
+                            separator = "\n",
+                            prefix = "\n${correctAnswer}\n",
+                            postfix = "\n 0 – выйти в меню",
+                        )
 
-                println(variants)
-                print("Введите номер ответа (1-4): ")
-                var userAnswer = readln().toIntOrNull()
-
-                while (userAnswer == null ||
-                    userAnswer !in 0..4
-                ) {
-                    println("Неверный ввод. Выберите правильный ответ: ")
                     println(variants)
-                    print("Введите номер ответа (1-4): ")
-                    userAnswer = readln().toIntOrNull()
+                    print("Введите ответ: ")
+                    var userAnswer = readln().toIntOrNull()
+
+                    if (userAnswer == 0) break
+
+                    while (userAnswer == null || userAnswer !in 0..4) {
+                        println("Неверный ввод. Выберите правильный ответ: ")
+                        println(variants)
+                        print("Введите номер ответа (1-4): ")
+                        userAnswer = readln().toIntOrNull()
+                    }
+                    println("\nправильно")
                 }
-                println()
-                println("правильно")
-                println()
             }
 
             "2" -> {
