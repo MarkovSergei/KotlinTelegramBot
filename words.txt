@@ -1,5 +1,8 @@
-hello|привет|3
-dog|собака|0
+hello|привет
+dog|собака
 cat|кошка
-table|стол|2
-river|река|2
+table|стол
+river|река
+forest|лес
+time|время
+sun|солнце
