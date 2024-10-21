@@ -26,8 +26,6 @@ fun main() {
         dictionary.add(word)
     }
 
-
-
     while (true) {
         println("\nМеню: ")
         println("1. Учить слова")
@@ -37,8 +35,6 @@ fun main() {
         val input = readln()
 
         when (input) {
-
-
             "1" -> {
                 while (true) {
                     val notLearnedList = dictionary.filter { it.correctAnswersCount < 3 }
@@ -56,7 +52,7 @@ fun main() {
                         .joinToString(
                             separator = "\n",
                             prefix = "\n${correctAnswer}\n",
-                            postfix = "\n 0 – выйти в меню",
+                            postfix = "\n------------\n 0 – выйти в меню",
                         )
 
                     println(variants)
@@ -71,9 +67,11 @@ fun main() {
                         print("Введите номер ответа (1-4): ")
                         userAnswer = readln().toIntOrNull()
                     }
-                    println("\nправильно")
+                    val correctAnswerId = questionWords.indexOf(correctAnswer)
+                    println("индекс - $correctAnswerId")
+                    }
                 }
-            }
+
 
             "2" -> {
                 val totalWords = dictionary.size
