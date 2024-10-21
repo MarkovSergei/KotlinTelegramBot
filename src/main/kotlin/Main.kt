@@ -70,6 +70,7 @@ fun main() {
                     val correctAnswerId = questionWords.indexOf(correctAnswer)
                     println("индекс - $correctAnswerId")
                     }
+
                 }
 
 
