@@ -83,7 +83,6 @@ fun main() {
                         println("Неправильно. ${correctAnswer.original} - это ${correctAnswer.translate}.")
                     }
                 }
-
             }
 
             "2" -> {
