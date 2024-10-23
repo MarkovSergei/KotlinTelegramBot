@@ -27,25 +27,11 @@ fun main() {
         dictionary.add(word)
     }
 
-    fun saveDictionary(findWord: Word) {
+    fun saveDictionary(dictionary: MutableList<Word>) {
         val file = File("words.txt")
-        val lines = file.readLines()
-
-        val updatedLines = lines.map { line ->
-            val lineParts = line.split("|")
-            val word = Word(
-                original = lineParts[0],
-                translate = lineParts[1],
-                correctAnswersCount = lineParts.getOrNull(2)?.toInt() ?: 0
-            )
-
-            //запустить цикл фор для поиска findWord и обратившить к конкретной строке сделать что ниже
-            val updatedCorrectAnswersCount = word.correctAnswersCount + 1
-            val updatedLine = "$|$updatedCorrectAnswersCount"
-            updatedLine
-        }
-
-        file.writeText(updatedLines.joinToString("\n"))
+        val updateLines =
+            dictionary.joinToString("\n") { it.original + "|" + it.translate + "|" + it.correctAnswersCount }
+        file.writeText(updateLines)
     }
 
     while (true) {
@@ -62,7 +48,7 @@ fun main() {
                     val notLearnedList = dictionary.filter { it.correctAnswersCount < 3 }
                     if (notLearnedList.isEmpty()) {
                         println("Все слова в словаре выучены.")
-                        continue
+                        break
                     }
 
                     val questionWords = notLearnedList.shuffled().take(4)
@@ -91,12 +77,8 @@ fun main() {
                     val correctAnswerId = questionWords.indexOf(correctAnswer) + 1
 
                     if (userAnswer == correctAnswerId) {
-                        println(correctAnswer)
-
                         correctAnswer.correctAnswersCount++
-                        saveDictionary(correctAnswer)
-
-                        println(correctAnswer)
+                        saveDictionary(dictionary)
                         println("Правильно!")
                     } else {
                         println("Неправильно. ${correctAnswer.original} - это ${correctAnswer.translate}.")
