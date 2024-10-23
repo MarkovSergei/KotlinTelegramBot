@@ -10,7 +10,6 @@ data class Word(
     }
 }
 
-
 fun main() {
     val wordsFile = File("words.txt")
     wordsFile.createNewFile()
