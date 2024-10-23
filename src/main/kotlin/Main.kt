@@ -3,12 +3,13 @@ import java.io.File
 data class Word(
     val original: String,
     val translate: String,
-    val correctAnswersCount: Int,
+    var correctAnswersCount: Int,
 ) {
     override fun toString(): String {
         return "$original, $translate, $correctAnswersCount"
     }
 }
+
 
 fun main() {
     val wordsFile = File("words.txt")
@@ -24,6 +25,27 @@ fun main() {
             correctAnswersCount = lineParts.getOrNull(2)?.toInt() ?: 0
         )
         dictionary.add(word)
+    }
+
+    fun saveDictionary(findWord: Word) {
+        val file = File("words.txt")
+        val lines = file.readLines()
+
+        val updatedLines = lines.map { line ->
+            val lineParts = line.split("|")
+            val word = Word(
+                original = lineParts[0],
+                translate = lineParts[1],
+                correctAnswersCount = lineParts.getOrNull(2)?.toInt() ?: 0
+            )
+
+            //запустить цикл фор для поиска findWord и обратившить к конкретной строке сделать что ниже
+            val updatedCorrectAnswersCount = word.correctAnswersCount + 1
+            val updatedLine = "$|$updatedCorrectAnswersCount"
+            updatedLine
+        }
+
+        file.writeText(updatedLines.joinToString("\n"))
     }
 
     while (true) {
@@ -44,14 +66,13 @@ fun main() {
                     }
 
                     val questionWords = notLearnedList.shuffled().take(4)
-                    val correctAnswer = questionWords[0].original
+                    val correctAnswer = questionWords.random()
 
                     val variants = questionWords
-                        .shuffled()
                         .mapIndexed { index: Int, word: Word -> " ${index + 1} – ${word.translate}" }
                         .joinToString(
                             separator = "\n",
-                            prefix = "\n${correctAnswer}\n",
+                            prefix = "\n${correctAnswer.original}\n",
                             postfix = "\n------------\n 0 – выйти в меню",
                         )
 
@@ -67,12 +88,22 @@ fun main() {
                         print("Введите номер ответа (1-4): ")
                         userAnswer = readln().toIntOrNull()
                     }
-                    val correctAnswerId = questionWords.indexOf(correctAnswer)
-                    println("индекс - $correctAnswerId")
-                    }
+                    val correctAnswerId = questionWords.indexOf(correctAnswer) + 1
 
+                    if (userAnswer == correctAnswerId) {
+                        println(correctAnswer)
+
+                        correctAnswer.correctAnswersCount++
+                        saveDictionary(correctAnswer)
+
+                        println(correctAnswer)
+                        println("Правильно!")
+                    } else {
+                        println("Неправильно. ${correctAnswer.original} - это ${correctAnswer.translate}.")
+                    }
                 }
 
+            }
 
             "2" -> {
                 val totalWords = dictionary.size
