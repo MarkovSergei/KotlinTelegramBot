@@ -94,6 +94,7 @@ fun main() {
 
             "0" -> break
             else -> println("Некорректный ввод")
+
         }
     }
 }
