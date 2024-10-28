@@ -1,8 +1,8 @@
-hello|привет|0
-dog|собака|0
+hello|привет|1
+dog|собака|1
 cat|кошка|0
 table|стол|0
-river|река|0
+river|река|1
 forest|лес|0
-time|время|0
+time|время|1
 sun|солнце|0
