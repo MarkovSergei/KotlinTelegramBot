@@ -8,14 +8,16 @@ data class Word(
     }
 }
 
-
-fun questionToString(question: Question): String {
-    val variants = question.variants
+fun Question.asConsoleString(): String {
+    val variants = this.variants
         .mapIndexed { index: Int, word: Word -> " ${index + 1} – ${word.translate}" }
-        .joinToString(separator = "\n")
-    return question.correctAnswer.questionWord + "\n" + variants + "\n 0 - выход в меню"
+        .joinToString(
+            separator = "\n",
+            prefix = "\n${this.correctAnswer.original}\n",
+            postfix = "\n ----------\n 0 - Меню",
+        )
+    return variants
 }
-
 
 fun main() {
     val trainer = LearnWordsTrainer()
@@ -30,31 +32,23 @@ fun main() {
 
         when (input) {
             "1" -> {
-                val question = trainer.getNextQuestion()
                 while (true) {
-
+                    val question = trainer.getNextQuestion()
                     if (question == null) {
                         println("Все слова в словаре выучены.")
                         break
                     } else {
-                        println(questionToString(question))
+                        println(question.asConsoleString())
                         print("Введите ответ: ")
 
-                        var userAnswer = readln().toIntOrNull()
+                        val userAnswer: Int? = readln().toIntOrNull()
                         if (userAnswer == 0) break
-
-
-
-                        while (userAnswer == null || userAnswer !in 0..4) {
-                            println("Неверный ввод. Выберите правильный ответ: ")
-                            println(questionToString(question))
-                            print("Введите номер ответа (1-4): ")
-                            userAnswer = readln().toIntOrNull()
-                        }
-                        if (trainer.checkAnswer(userAnswer.minus(1))) {
-                            println("Правильно!")
-                        } else {
-                            println("Неправильно. ${question.correctAnswer.original} - это ${question.correctAnswer.translate}.")
+                        if (userAnswer != null) {
+                            if (trainer.checkAnswer(userAnswer.minus(1))) {
+                                println("Правильно!")
+                            } else {
+                                println("Неправильно. ${question.correctAnswer.original} - это ${question.correctAnswer.translate}.")
+                            }
                         }
                     }
                 }

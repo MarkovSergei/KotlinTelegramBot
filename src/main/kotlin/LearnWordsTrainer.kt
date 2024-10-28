@@ -6,44 +6,14 @@ data class Statistic(
     val percentLearned: Int
 )
 
-
 data class Question(
     val variants: List<Word>,
     val correctAnswer: Word,
 )
 
-
 class LearnWordsTrainer {
     private var question: Question? = null
     private val dictionary = loadDictionary()
-
-
-    private fun loadDictionary(): List<Word> {
-        val dictionary = mutableListOf<Word>()
-        val wordsFile = File("words.txt")
-        wordsFile.createNewFile()
-        val lines: List<String> = wordsFile.readLines()
-
-        for (line in lines) {
-            val lineParts = line.split("|")
-            val word = Word(
-                original = lineParts[0],
-                translate = lineParts[1],
-                correctAnswersCount = lineParts.getOrNull(2)?.toInt() ?: 0
-            )
-            dictionary.add(word)
-        }
-        return dictionary
-    }
-
-
-    private fun saveDictionary(dictionary: List<Word>) {
-        val file = File("words.txt")
-        val updateLines =
-            dictionary.joinToString("\n") { it.original + "|" + it.translate + "|" + it.correctAnswersCount }
-        file.writeText(updateLines)
-    }
-
 
     fun getStatistic(): Statistic {
         val totalWords = dictionary.size
@@ -78,6 +48,30 @@ class LearnWordsTrainer {
         } ?: false
     }
 
+    private fun loadDictionary(): List<Word> {
+        val dictionary = mutableListOf<Word>()
+        val wordsFile = File("words.txt")
+        wordsFile.createNewFile()
+        val lines: List<String> = wordsFile.readLines()
 
+        for (line in lines) {
+            val lineParts = line.split("|")
+            val word = Word(
+                original = lineParts[0],
+                translate = lineParts[1],
+                correctAnswersCount = lineParts.getOrNull(2)?.toInt() ?: 0
+            )
+            dictionary.add(word)
+        }
+        return dictionary
+
+    }
+
+    private fun saveDictionary(dictionary: List<Word>) {
+        val file = File("words.txt")
+        val updateLines =
+            dictionary.joinToString("\n") { it.original + "|" + it.translate + "|" + it.correctAnswersCount }
+        file.writeText(updateLines)
+    }
 }
 
