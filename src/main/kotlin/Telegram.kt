@@ -10,13 +10,17 @@ fun main(args: Array<String>) {
     while (true) {
         Thread.sleep(2000)
         val updates: String = getUpdates(botToken, updateId)
-        println(updates)
+       println(updates)
 
-        val startUpdateId = updates.lastIndexOf("update_id")
-        val endUpdateId = updates.lastIndexOf(",\n\"message\"")
-        if (startUpdateId == -1 || endUpdateId == -1) continue
-        val updateIdString = updates.substring(startUpdateId + 11, endUpdateId)
-        updateId = updateIdString.toInt() + 1
+        val updateIdRegex: Regex = "\"update_id\":(.+?),".toRegex()
+        val updateIdMatch = updateIdRegex.find(updates)?.groups?.get(1)?.value?.toInt() ?: continue
+
+        updateId = updateIdMatch + 1
+
+        val messageTextRegex: Regex = "\"text\":\"(.+?)\"".toRegex()
+        val text = messageTextRegex.find(updates)?.groups?.get(1)?.value
+        println(text)
+
     }
 }
 
