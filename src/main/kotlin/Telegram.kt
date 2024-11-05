@@ -6,21 +6,17 @@ import java.net.http.HttpResponse
 fun main(args: Array<String>) {
     val botToken = args[0]
     var updateId = 0
+    val messageTextRegex: Regex = "\"text\":\"(.+?)\"".toRegex()
+    val updateIdRegex: Regex = "\"update_id\":(.+?),".toRegex()
 
     while (true) {
         Thread.sleep(2000)
         val updates: String = getUpdates(botToken, updateId)
-       println(updates)
-
-        val updateIdRegex: Regex = "\"update_id\":(.+?),".toRegex()
+        println(updates)
         val updateIdMatch = updateIdRegex.find(updates)?.groups?.get(1)?.value?.toInt() ?: continue
-
         updateId = updateIdMatch + 1
-
-        val messageTextRegex: Regex = "\"text\":\"(.+?)\"".toRegex()
         val text = messageTextRegex.find(updates)?.groups?.get(1)?.value
         println(text)
-
     }
 }
 
