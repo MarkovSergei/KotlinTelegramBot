@@ -1,5 +1,26 @@
 import java.io.File
 
+data class Word(
+    val original: String,
+    val translate: String,
+    var correctAnswersCount: Int,
+) {
+    override fun toString(): String {
+        return "$original, $translate, $correctAnswersCount"
+    }
+}
+
+fun Question.asConsoleString(): String {
+    val variants = this.variants
+        .mapIndexed { index: Int, word: Word -> " ${index + 1} – ${word.translate}" }
+        .joinToString(
+            separator = "\n",
+            prefix = "\n${this.correctAnswer.original}\n",
+            postfix = "\n ----------\n 0 - Меню",
+        )
+    return variants
+}
+
 data class Statistic(
     val totalWords: Int,
     val learnedCount: Int,
@@ -44,7 +65,7 @@ class LearnWordsTrainer(private val learnedAnswerCount: Int = 3, private val cou
 
     fun checkAnswer(userAnswerId: Int?): Boolean {
         return question?.let {
-            if (question == null) return false
+            if (this.question == null) return false
             val correctAnswerId = it.variants.indexOf(it.correctAnswer)
             if (correctAnswerId == userAnswerId) {
                 it.correctAnswer.correctAnswersCount++
@@ -73,7 +94,7 @@ class LearnWordsTrainer(private val learnedAnswerCount: Int = 3, private val cou
                 dictionary.add(word)
             }
             return dictionary
-        }catch (e: IndexOutOfBoundsException){
+        } catch (e: IndexOutOfBoundsException) {
             throw IllegalStateException("Некорректный файл словаря. ")
         }
 
