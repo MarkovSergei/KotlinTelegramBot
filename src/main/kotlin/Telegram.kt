@@ -21,8 +21,7 @@ fun main(args: Array<String>) {
         val chatId = chatIdRegex.find(updates)?.groups?.get(1)?.value?.toLong() ?: continue
         println(text)
 
-        if (text == "Hello") telegramBotService.sendMessage(chatId, "Hello")
         if (text == "/start") telegramBotService.sendMenu(chatId)
-        if (data == "statistics_clicked") telegramBotService.sendMessage(chatId, "Выучено 10 слов из 10 | 100%")
+        if (data == STATISTIC_BUTTON) telegramBotService.sendMessage(chatId, "Выучено 10 слов из 10 | 100%")
     }
 }

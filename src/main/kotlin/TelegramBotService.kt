@@ -5,6 +5,9 @@ import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 import java.nio.charset.StandardCharsets
 
+const val LEARN_BUTTON = "learn_words_clicked"
+const val STATISTIC_BUTTON = "statistics_clicked"
+
 class TelegramBotService(private val botToken: String) {
     private val apiUrl = "https://api.telegram.org/bot${this.botToken}"
     private val client: HttpClient = HttpClient.newBuilder().build()
@@ -35,22 +38,24 @@ class TelegramBotService(private val botToken: String) {
         val urlSendMessage = "$apiUrl/sendMessage?"
         val sendMenuBody = """
             {
-            "chat_id": $chatId,
-            "text": "Основное меню",
-            "reply_markup": { 
-            "inline_keyboard":[
-            [
-            {
-            "text": "Изучить слова",
-            "callback_data": "learn_words_clicked"
-            },
-            {
-            "text": "Статистика",
-            "callback_data": "statistics_clicked"
-            }
-            ]
-            ]
-            }
+                "chat_id": $chatId,
+                "text": "Основное меню",
+                "reply_markup": 
+                { 
+                    "inline_keyboard":
+                    [
+                        [
+                            {
+                                "text": "Изучить слова",
+                                "callback_data": "$LEARN_BUTTON"
+                            },
+                            {
+                                "text": "Статистика",
+                                "callback_data": "$STATISTIC_BUTTON"
+                            }
+                        ]
+                    ]
+                }
             }             
         """.trimIndent()
 
