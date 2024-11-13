@@ -20,9 +20,7 @@ fun main(args: Array<String>) {
         val data = dataRegex.find(updates)?.groups?.get(1)?.value
         val chatId = chatIdRegex.find(updates)?.groups?.get(1)?.value?.toLong() ?: continue
         println(text)
-
         val statisticsPrint = "Выучено ${trainer.getStatistic().learnedCount} из ${trainer.getStatistic().totalWords} слов | ${trainer.getStatistic().percentLearned}%"
-
         if (text == "/start") telegramBotService.sendMenu(chatId)
         if (data == STATISTIC_BUTTON) telegramBotService.sendMessage(chatId, statisticsPrint)
     }
