@@ -1,24 +1,3 @@
-data class Word(
-    val original: String,
-    val translate: String,
-    var correctAnswersCount: Int,
-) {
-    override fun toString(): String {
-        return "$original, $translate, $correctAnswersCount"
-    }
-}
-
-fun Question.asConsoleString(): String {
-    val variants = this.variants
-        .mapIndexed { index: Int, word: Word -> " ${index + 1} – ${word.translate}" }
-        .joinToString(
-            separator = "\n",
-            prefix = "\n${this.correctAnswer.original}\n",
-            postfix = "\n ----------\n 0 - Меню",
-        )
-    return variants
-}
-
 fun main() {
 
     val trainer = try {
