@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets
 
 const val LEARN_BUTTON = "learn_words_clicked"
 const val STATISTIC_BUTTON = "statistics_clicked"
+const val CALLBACK_DATA_ANSWER_PREFIX = "answer_"
 
 class TelegramBotService(private val botToken: String) {
     private val apiUrl = "https://api.telegram.org/bot${this.botToken}"
@@ -52,6 +53,48 @@ class TelegramBotService(private val botToken: String) {
                             {
                                 "text": "Статистика",
                                 "callback_data": "$STATISTIC_BUTTON"
+                            }
+                        ]
+                    ]
+                }
+            }             
+        """.trimIndent()
+
+        val requestSendMessage: HttpRequest = HttpRequest.newBuilder().uri(URI.create(urlSendMessage))
+            .header("Content-type", "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(sendMenuBody))
+            .build()
+        val responseSendMessage: HttpResponse<String> =
+            client.send(requestSendMessage, HttpResponse.BodyHandlers.ofString())
+        return responseSendMessage.body()
+    }
+
+    fun sendQuestion(chatId: Long, question: Question): String?{
+        val urlSendMessage = "$apiUrl/sendMessage?"
+        val sendMenuBody = """
+            {
+                "chat_id": $chatId,
+                "text": "",
+                "reply_markup": 
+                { 
+                    "inline_keyboard":
+                    [
+                        [
+                            {
+                                "text": "",
+                                "callback_data": ""
+                            },
+                            {
+                                "text": "",
+                                "callback_data": ""
+                            }
+                            {
+                                "text": "",
+                                "callback_data": ""
+                            }
+                            {
+                                "text": "",
+                                "callback_data": ""
                             }
                         ]
                     ]
