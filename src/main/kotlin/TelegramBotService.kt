@@ -70,11 +70,12 @@ class TelegramBotService(private val botToken: String) {
     }
 
     fun sendQuestion(chatId: Long, question: Question): String?{
+
         val urlSendMessage = "$apiUrl/sendMessage?"
         val sendMenuBody = """
             {
                 "chat_id": $chatId,
-                "text": "",
+                "text": "${question.correctAnswer.original}",
                 "reply_markup": 
                 { 
                     "inline_keyboard":

@@ -27,6 +27,8 @@ fun main(args: Array<String>) {
 
         if (text == "/start") telegramBotService.sendMenu(chatId)
         if (data == STATISTIC_BUTTON) telegramBotService.sendMessage(chatId, statisticsPrint)
-        if (data == LEARN_BUTTON) telegramBotService.sendQuestion(chatId, )
+
+        val question = trainer.getNextQuestion()
+        if (data == LEARN_BUTTON) telegramBotService.sendQuestion(chatId,question)
     }
 }
