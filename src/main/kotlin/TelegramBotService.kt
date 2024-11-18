@@ -82,19 +82,19 @@ class TelegramBotService(private val botToken: String) {
                     [
                         [
                             {
-                                "text": "",
+                                "text": "${question.variants.indexOf()}",
                                 "callback_data": ""
                             },
                             {
-                                "text": "",
+                                "text": "${question.variants}",
                                 "callback_data": ""
                             }
                             {
-                                "text": "",
+                                "text": "${question.variants}",
                                 "callback_data": ""
                             }
                             {
-                                "text": "",
+                                "text": "${question.variants}",
                                 "callback_data": ""
                             }
                         ]
