@@ -24,11 +24,14 @@ fun main(args: Array<String>) {
         val statistics = trainer.getStatistic()
         val statisticsPrint =
             "Выучено ${statistics.learnedCount} из ${statistics.totalWords} слов | ${statistics.percentLearned}%"
-
         if (text == "/start") telegramBotService.sendMenu(chatId)
         if (data == STATISTIC_BUTTON) telegramBotService.sendMessage(chatId, statisticsPrint)
 
         val question = trainer.getNextQuestion()
-        if (data == LEARN_BUTTON) telegramBotService.sendQuestion(chatId,question)
+        if (question == null) {
+            telegramBotService.sendMessage(chatId, "Вы выучили все слова в базе")
+        } else {
+            if (data == LEARN_BUTTON) telegramBotService.sendQuestion(chatId, question)
+        }
     }
 }
