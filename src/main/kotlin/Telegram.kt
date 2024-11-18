@@ -28,10 +28,12 @@ fun main(args: Array<String>) {
         if (data == STATISTIC_BUTTON) telegramBotService.sendMessage(chatId, statisticsPrint)
 
         val question = trainer.getNextQuestion()
-        if (question == null) {
-            telegramBotService.sendMessage(chatId, "Вы выучили все слова в базе")
-        } else {
-            if (data == LEARN_BUTTON) telegramBotService.sendQuestion(chatId, question)
+        if (data == LEARN_BUTTON) {
+            if (question == null) {
+                telegramBotService.sendMessage(chatId, "Вы выучили все слова в базе")
+            } else {
+                telegramBotService.sendQuestion(chatId, question)
+            }
         }
     }
 }
