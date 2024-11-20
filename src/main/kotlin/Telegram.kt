@@ -27,13 +27,19 @@ fun main(args: Array<String>) {
         if (text == "/start") telegramBotService.sendMenu(chatId)
         if (data == STATISTIC_BUTTON) telegramBotService.sendMessage(chatId, statisticsPrint)
 
+        //ТРЕНАЖЕР
         val question = trainer.getNextQuestion()
-        if (data == LEARN_BUTTON) {
-            if (question == null) {
-                telegramBotService.sendMessage(chatId, "Вы выучили все слова в базе")
-            } else {
-                telegramBotService.sendQuestion(chatId, question)
+
+        fun checkNextQuestionAndSend() {
+            if (data == LEARN_BUTTON) {
+                if (question == null) {
+                    telegramBotService.sendMessage(chatId, "Вы выучили все слова в базе")
+                } else {
+                    telegramBotService.sendQuestion(chatId, question)
+                }
             }
         }
+
+        checkNextQuestionAndSend()
     }
 }

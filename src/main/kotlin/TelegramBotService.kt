@@ -69,7 +69,15 @@ class TelegramBotService(private val botToken: String) {
         return responseSendMessage.body()
     }
 
-    fun sendQuestion(chatId: Long, question: Question): String?{
+    fun sendQuestion(chatId: Long, question: Question): String? {
+        val variantsButton = question.variants.mapIndexed { index: Int, word: Word ->
+            """
+            {
+                "text": "${word.translate}",
+                "callback_data": "$CALLBACK_DATA_ANSWER_PREFIX$index"
+            }
+            """
+        }.joinToString(",")
 
         val urlSendMessage = "$apiUrl/sendMessage?"
         val sendMenuBody = """
@@ -81,22 +89,7 @@ class TelegramBotService(private val botToken: String) {
                     "inline_keyboard":
                     [
                         [
-                            {
-                                "text": "${question.variants.indexOf()}",
-                                "callback_data": ""
-                            },
-                            {
-                                "text": "${question.variants}",
-                                "callback_data": ""
-                            }
-                            {
-                                "text": "${question.variants}",
-                                "callback_data": ""
-                            }
-                            {
-                                "text": "${question.variants}",
-                                "callback_data": ""
-                            }
+                            $variantsButton
                         ]
                     ]
                 }
