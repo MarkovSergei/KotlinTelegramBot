@@ -36,10 +36,21 @@ fun main(args: Array<String>) {
                     telegramBotService.sendMessage(chatId, "Вы выучили все слова в базе")
                 } else {
                     telegramBotService.sendQuestion(chatId, question)
+
+                    val answerPrefix = CALLBACK_DATA_ANSWER_PREFIX
+
+                    if (data.startsWith(answerPrefix)) {
+                        val index = data.substringAfter(answerPrefix).toInt()
+                        println(index)
+                    } else {
+                        println("Что не так делаю?")
+                    }
                 }
             }
         }
 
         checkNextQuestionAndSend()
+
+
     }
 }
