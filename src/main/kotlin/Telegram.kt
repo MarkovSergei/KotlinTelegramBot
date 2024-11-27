@@ -14,7 +14,6 @@ fun checkNextQuestionAndSend(
     return question
 }
 
-var question: Question? = null
 
 fun main(args: Array<String>) {
     val botToken = args[0]
