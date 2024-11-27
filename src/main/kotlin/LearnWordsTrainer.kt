@@ -65,7 +65,6 @@ class LearnWordsTrainer(private val learnedAnswerCount: Int = 3, private val cou
 
     fun checkAnswer(userAnswerId: Int?): Boolean {
         return question?.let {
-            if (question == null) return false
             val correctAnswerId = it.variants.indexOf(it.correctAnswer)
             if (correctAnswerId == userAnswerId) {
                 it.correctAnswer.correctAnswersCount++
