@@ -2,7 +2,7 @@ hello|привет|0
 dog|собака|1
 cat|кошка|2
 table|стол|0
-river|река|1
-forest|лес|0
+river|река|2
+forest|лес|3
 time|время|0
 sun|солнце|1
