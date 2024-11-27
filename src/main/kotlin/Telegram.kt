@@ -51,7 +51,7 @@ fun main(args: Array<String>) {
             }
 
             data == LEARN_BUTTON -> {
-                question = checkNextQuestionAndSend(
+                trainer.question = checkNextQuestionAndSend(
                     trainer = trainer,
                     telegramBotService = telegramBotService,
                     chatId = chatId
@@ -65,10 +65,10 @@ fun main(args: Array<String>) {
                 } else {
                     telegramBotService.sendMessage(
                         chatId,
-                        "Неправильно. ${question?.correctAnswer?.original} - это ${question?.correctAnswer?.translate}."
+                        "Неправильно. ${trainer.question?.correctAnswer?.original} - это ${trainer.question?.correctAnswer?.translate}."
                     )
                 }
-                question = checkNextQuestionAndSend(
+                trainer.question = checkNextQuestionAndSend(
                     trainer = trainer,
                     telegramBotService = telegramBotService,
                     chatId = chatId

@@ -1,7 +1,5 @@
 import java.io.File
 
-internal var question: Question? = null
-
 data class Word(
     val original: String,
     val translate: String,
@@ -35,6 +33,7 @@ data class Question(
 )
 
 class LearnWordsTrainer(private val learnedAnswerCount: Int = 3, private val countOfQuestionWords: Int = 4) {
+    internal var question: Question? = null
     private val dictionary = loadDictionary()
 
     fun getStatistic(): Statistic {
