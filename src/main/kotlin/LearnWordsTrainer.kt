@@ -33,7 +33,8 @@ data class Question(
 )
 
 class LearnWordsTrainer(private val learnedAnswerCount: Int = 3, private val countOfQuestionWords: Int = 4) {
-    private var question: Question? = null
+    var question: Question? = null
+        private set
     private val dictionary = loadDictionary()
 
     fun getStatistic(): Statistic {
@@ -65,7 +66,6 @@ class LearnWordsTrainer(private val learnedAnswerCount: Int = 3, private val cou
 
     fun checkAnswer(userAnswerId: Int?): Boolean {
         return question?.let {
-            if (this.question == null) return false
             val correctAnswerId = it.variants.indexOf(it.correctAnswer)
             if (correctAnswerId == userAnswerId) {
                 it.correctAnswer.correctAnswersCount++
