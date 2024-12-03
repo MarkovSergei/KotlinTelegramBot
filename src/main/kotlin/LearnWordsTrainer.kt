@@ -32,7 +32,11 @@ data class Question(
     val correctAnswer: Word,
 )
 
-class LearnWordsTrainer(private val learnedAnswerCount: Int = 3, private val countOfQuestionWords: Int = 4) {
+class LearnWordsTrainer(
+    private val fileName: String = "words.txt",
+    private val learnedAnswerCount: Int = 3,
+    private val countOfQuestionWords: Int = 4
+) {
     var question: Question? = null
         private set
     private val dictionary = loadDictionary()
@@ -69,7 +73,7 @@ class LearnWordsTrainer(private val learnedAnswerCount: Int = 3, private val cou
             val correctAnswerId = it.variants.indexOf(it.correctAnswer)
             if (correctAnswerId == userAnswerId) {
                 it.correctAnswer.correctAnswersCount++
-                saveDictionary(dictionary)
+                saveDictionary()
                 true
             } else {
                 false
@@ -79,8 +83,12 @@ class LearnWordsTrainer(private val learnedAnswerCount: Int = 3, private val cou
 
     private fun loadDictionary(): List<Word> {
         try {
+            val wordsFile = File(fileName)
+            if (!wordsFile.exists()) {
+                File("words.txt").copyTo(wordsFile)
+            }
+
             val dictionary = mutableListOf<Word>()
-            val wordsFile = File("words.txt")
             wordsFile.createNewFile()
             val lines: List<String> = wordsFile.readLines()
 
@@ -100,10 +108,15 @@ class LearnWordsTrainer(private val learnedAnswerCount: Int = 3, private val cou
 
     }
 
-    private fun saveDictionary(dictionary: List<Word>) {
-        val file = File("words.txt")
+    private fun saveDictionary() {
+        val file = File(fileName)
         val updateLines =
             dictionary.joinToString("\n") { it.original + "|" + it.translate + "|" + it.correctAnswersCount }
         file.writeText(updateLines)
+    }
+
+    fun resetProgress() {
+        dictionary.forEach { it.correctAnswersCount = 0 }
+        saveDictionary()
     }
 }
