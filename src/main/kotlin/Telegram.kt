@@ -10,13 +10,12 @@ fun main(args: Array<String>) {
 
     while (true) {
         Thread.sleep(2000)
-        val responseString: String = telegramBotService.getUpdates(lastUpdateId)
+        val responseString: String = runCatching { telegramBotService.getUpdates(lastUpdateId) }.getOrNull() ?: continue
         val response: Response = json.decodeFromString(responseString)
-        if (response.result.isEmpty()) continue
+        if (response.result.isNullOrEmpty()) continue
         val sortUpdates = response.result.sortedBy { it.updateId }
         sortUpdates.forEach { handleUpdate(it, json, trainers, telegramBotService) }
         lastUpdateId = sortUpdates.last().updateId + 1
-
     }
 }
 
@@ -30,7 +29,6 @@ fun handleUpdate(
     val message = update.massage?.text
     val data = update.callBackQuery?.data
     val chatId = update.massage?.chat?.id ?: update.callBackQuery?.message?.chat?.id ?: return
-
     val trainer = trainers.getOrPut(chatId) { LearnWordsTrainer("$chatId.txt") }
 
     when {

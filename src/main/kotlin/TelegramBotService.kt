@@ -20,7 +20,7 @@ data class Update(
 @Serializable
 data class Response(
     @SerialName("result")
-    val result: List<Update>,
+    val result: List<Update>?,
 )
 
 @Serializable
@@ -157,11 +157,14 @@ class TelegramBotService(private val botToken: String) {
             chatId = chatId,
             text = question.correctAnswer.original,
             replyMarkup = ReplyMarkup(
-                listOf(question.variants.mapIndexed { index: Int, word: Word ->
-                    InLineKeyBoard(
-                        text = word.translate, callbackData = "$CALLBACK_DATA_ANSWER_PREFIX$index"
+                listOf(
+                    listOf(question.variants.mapIndexed { index: Int, word: Word ->
+                        InLineKeyBoard(text = word.translate, callbackData = "$CALLBACK_DATA_ANSWER_PREFIX$index")
+                    }),
+                    listOf(
+                        InLineKeyBoard(text = "Вернуться в меню", callbackData = START_BOT)
                     )
-                })
+                )
             )
         )
 
