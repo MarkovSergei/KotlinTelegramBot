@@ -20,7 +20,7 @@ data class Update(
 @Serializable
 data class Response(
     @SerialName("result")
-    val result: List<Update>,
+    val result: List<Update>?,
 )
 
 @Serializable
@@ -72,6 +72,7 @@ data class InLineKeyBoard(
 const val START_BOT = "/start"
 const val LEARN_BUTTON = "learn_words_clicked"
 const val STATISTIC_BUTTON = "statistics_clicked"
+const val RESET_BUTTON = "reset_clicked"
 const val CALLBACK_DATA_ANSWER_PREFIX = "answer_"
 
 fun checkNextQuestionAndSend(
@@ -130,6 +131,9 @@ class TelegramBotService(private val botToken: String) {
                     listOf(
                         InLineKeyBoard(text = "Изучать слова", callbackData = LEARN_BUTTON),
                         InLineKeyBoard(text = "Статистика", callbackData = STATISTIC_BUTTON)
+                    ),
+                    listOf(
+                        InLineKeyBoard(text = "Сбросить прогресс", callbackData = RESET_BUTTON),
                     )
                 )
             )
@@ -153,11 +157,14 @@ class TelegramBotService(private val botToken: String) {
             chatId = chatId,
             text = question.correctAnswer.original,
             replyMarkup = ReplyMarkup(
-                listOf(question.variants.mapIndexed { index: Int, word: Word ->
-                    InLineKeyBoard(
-                        text = word.translate, callbackData = "$CALLBACK_DATA_ANSWER_PREFIX$index"
+                listOf(
+                    listOf(question.variants.mapIndexed { index: Int, word: Word ->
+                        InLineKeyBoard(text = word.translate, callbackData = "$CALLBACK_DATA_ANSWER_PREFIX$index")
+                    }),
+                    listOf(
+                        InLineKeyBoard(text = "Вернуться в меню", callbackData = START_BOT)
                     )
-                })
+                )
             )
         )
 

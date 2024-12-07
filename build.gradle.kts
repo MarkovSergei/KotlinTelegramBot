@@ -1,6 +1,8 @@
 plugins {
     kotlin("jvm") version "2.1.0"
     kotlin("plugin.serialization") version "2.1.0"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    application
 }
 
 group = "org.example"
@@ -18,6 +20,12 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
-kotlin {
-    jvmToolchain(20)
+
+application {
+    mainClass.set ( "TelegramKt" )
 }
+
+kotlin {
+    jvmToolchain(11)
+}
+
